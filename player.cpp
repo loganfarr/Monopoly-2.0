@@ -43,9 +43,18 @@ void player::getOutOfJail() {
 	inJail = false;
 }
 
+bool ifInJail() {
+	return inJail;
+}
+
 int player::rollDice() {
 	int die1 = rand() % 6 + 1;
 	int die2 = rand() % 6 + 1;
+
+	int die = new int[3];
+	die[1] = die1;
+	die[2] = die2;
+	die[3] = die1 + die2;
 
 	int total = die1 + die2;
 
@@ -61,7 +70,11 @@ int player::rollDice() {
 		endTurn();	
 	}
 
-	return total;
+	return die[];
+}
+
+int player::move() {
+	return currentPosition + rollDice();
 }
 
 void player::endTurn() {

@@ -13,8 +13,11 @@ propertySpace properties[40];
 player players[10];
 
 int freeParkingAmount;
+bool win;
 
 void initialize() {
+	win = false;
+
 	properties[0].initialize("Go", "corner", 0, 0);
 	properties[1].initialize("Mediterranean Avenue", "brown", 60, 2, 10, 30, 90, 160, 250);
 	properties[2].initialize("Community Chest", "card", 0, 0);
@@ -82,15 +85,93 @@ void initialize() {
 	}
 }
 
-void startGame() {
+void promptHelp() {
+	cout << "Command 		|	Action" << endl;
+	cout << "_________________________________________________________________________________________" << endl;
+	cout << "roll dice		|	Rolls the dice to move the player" << endl;
+	cout << "buy house 		|	Buys a house to put on a porperty" << endl;
+	cout << "buy property 	|	Buys the property the player is currently on" << endl;
+	cout << "sell house 	|	Sells a certain amount of houses on a selected property" << endl;
+	cout << "sell property 	|	Sells a selected property (and all the houses on it if there are any)" << endl;
+	cout << "trade			|	Initiates a trade with a selected player" << endl;
 
+}
+
+void prompt(player current) {
+	if(difficulty == 0) {
+		string answer;
+
+		cout << "What would you like to do?" << endl;
+		cin >> answer;
+
+		switch answer {
+			case "help":
+				promptHelp();
+				break;
+			case "roll dice":
+				if(!current.ifInJail) {
+					current.move();
+				}
+				else {
+					dice = rollDice();
+					if(current.jailTurns != 3) {
+						if(dice[1] == dice[2]) {
+							current.getOutOfJail();
+						}
+						else {
+							current.jailTurn++;
+							current.endTurn();
+						}
+					}
+					else {
+						if(dice[1] == dice[2]) {
+							current.getOutOfJail();
+						}
+						else {
+							current.setCash(current.getCash - 50);
+							current.getOutOfJail();
+						}
+
+						jailTurn = 0;
+					}
+					
+				}
+				break;
+			case "buy house":
+				cout << "How many houses would you like?" << endl;
+				int numberOfHouses;
+				cin << numberOfHouses;
+
+				if(cin) {
+					buyHouse(numberOfHouses);
+				}
+				else {
+					prompt();
+				}
+
+				buyHouse();
+				break;
+			default:
+				cout << "I was unable to figure out what the hell you're trying to say." << endl;
+				prompt();
+
+		}
+	}
+}
+
+void play() {
+	while(!win) {
+		for each(player current in players) {
+			prompt(current);
+		}
+	}
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 	initialize();
 	cout << "Game initialized." << endl;
-	startGame();
+	play();
 
 	return 0;
 }

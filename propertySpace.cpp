@@ -56,7 +56,7 @@ void propertySpace::initialize(std::string ptitle, std::string pcolor, int ppric
 }
 
 
-void propertySpace::checkProperty(int id) {
+void checkProperty(propertySpace properties[], int id) {
 	
 }
 
