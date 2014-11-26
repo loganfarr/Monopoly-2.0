@@ -15,9 +15,11 @@ player players[10];
 int freeParkingAmount;
 bool win;
 
+/* Initializes all of the properties and the players */
 void initialize() {
 	win = false;
 
+	/* Initializes and defines each of the properties */
 	properties[0].initialize("Go", "corner", 0, 0);
 	properties[1].initialize("Mediterranean Avenue", "brown", 60, 2, 10, 30, 90, 160, 250);
 	properties[2].initialize("Community Chest", "card", 0, 0);
@@ -59,20 +61,24 @@ void initialize() {
 	properties[38].initialize("Luxury Tax", "tax", 0, 100);
 	properties[39].initialize("Boardwalk", "blue", 400, 50, 200, 600, 1400, 1700, 2000);
 
+	//Sets the variables to be used when defining players and AI difficulty
 	int numberOfPlayers;
 	int numberOfHumans;
 	int aiDifficulty;
 
+	//Prompts the user to set up the game
 	cout << "How many players are playing? (This includes both human and AI. Max is 10.)" << endl << "Please enter a number (1-10)." << endl;
 	cin >> numberOfPlayers;
 	cout << "How many players will be human? Please enter a number (1-10)";
 	cin >> numberOfHumans;
 
+	//Asks the user what difficulty he/she wants the AI to be (Functionality to be decided later)
 	if(numberOfPlayers - numberOfHumans != 0) {
 		cout << "What difficulty would you like the AI to be on? Please enter a number (1-5)." << endl << "Note: this functionality is not built in yet; It is just a placeholder for data;" << endl;
 		cin >> aiDifficulty;
 	}
 
+	//Declares each of the human players
 	for(int i = 0; i < numberOfHumans; i++) {
 		string username;
 		cout << "Enter the username for Player" << i << "." << endl;
@@ -80,96 +86,101 @@ void initialize() {
 		players[i].initialize(username, 0);
 	}
 
+	//Declares each of the AI players
 	for(int i = numberOfHumans; i < numberOfPlayers; i++) {
 		players[i].initialize("Computer " + (i - numberOfHumans + 1), aiDifficulty);
 	}
 }
 
+//Displays the command help
 void promptHelp() {
-	cout << "Command 		|	Action" << endl;
+	cout << "Command        |   Action" << endl;
 	cout << "_________________________________________________________________________________________" << endl;
-	cout << "help 			|	Displays this prompt" < endl;
-	cout << "roll dice		|	Rolls the dice to move the player" << endl;
-	cout << "buy house 		|	Buys a house to put on a porperty" << endl;
-	cout << "buy property 	|	Buys the property the player is currently on" << endl;
-	cout << "sell house 	|	Sells a certain amount of houses on a selected property" << endl;
-	cout << "sell property 	|	Sells a selected property (and all the houses on it if there are any)" << endl;
-	cout << "trade			|	Initiates a trade with a selected player" << endl;
-	cout << "who owns this  |	Returns the owner of the current property." << endl;
+	cout << "help           |   Displays this prompt" << endl;
+	cout << "roll dice      |   Rolls the dice to move the player" << endl;
+	cout << "buy house      |   Buys a house to put on a porperty" << endl;
+	cout << "buy property   |   Buys the property the player is currently on" << endl;
+	cout << "sell house     |   Sells a certain amount of houses on a selected property" << endl;
+	cout << "sell property  |   Sells a selected property (and all the houses on it if there are any)" << endl;
+	cout << "trade          |   Initiates a trade with a selected player" << endl;
+	cout << "who owns this  |   Returns the owner of the current property." << endl;
 
 }
 
+//Promps the player for an action
 void prompt(player current, propertySpace property) {
-	if(difficulty == 0) {
-		string answer;
+	//If it's a human player's turn
+	if(current.difficulty == 0) {
+		string answer;   //Variable to store their answer in
+		int dice[3];     //The results from the die roll
 
 		cout << "What would you like to do?" << endl;
 		cin >> answer;
 
-		switch answer {
-			case "help":
-				promptHelp();
-				break;
-			case "roll dice":
-				if(!current.ifInJail) {
-					current.move();
-				}
-				else {
-					dice = rollDice();
-					if(current.jailTurns != 3) {
-						if(dice[1] == dice[2]) {
-							current.getOutOfJail();
-						}
-						else {
-							current.jailTurn++;
-							current.endTurn();
-						}
+		if(answer == "help") {
+			promptHelp();
+		}
+		else if(answer == "roll dice") {
+			//If the user is not in jail
+			if(!current.ifInJail) {
+				//The player moves
+				current.move(dice[3]);
+			}
+			else {
+				dice = current.rollDice();
+
+				//If the player has NOT been in jail for three turns
+				if(current.jailTurns != 3) {
+					if(dice[1] == dice[2]) { //If the user rolls doubles
+						current.getOutOfJail(); //Get the user out of jail
 					}
 					else {
-						if(dice[1] == dice[2]) {
-							current.getOutOfJail();
-						}
-						else {
-							current.setCash(current.getCash - 50);
-							current.getOutOfJail();
-						}
-
-						jailTurn = 0;
+						current.jailTurns++; //Add another one to the amount of turns the user has been in jail
+						current.endTurn();
 					}
-					
 				}
-				break;
-			case "buy house":
-				cout << "How many houses would you like?" << endl;
-				int numberOfHouses;
-				cin << numberOfHouses;
-
-				if(cin) {
-					property.buyHouse(numberOfHouses);
-				}
+				//If the player has been in jail for three turns
 				else {
-					cout << "Please enter a nuber, 1-5";
-					prompt();
-				}
+					if(dice[1] == dice[2]) { //If the user rolls doubles
+						current.getOutOfJail(); //Gets the user out of jail
+					}
+					else { //If the user does NOT roll doubles
+						current.setCash(current.getCash - 50); //Make the player pay the mandatory $50 fee to get out of jail 
+						current.getOutOfJail(); //Gets the user out of jail
+					}
+					current.jailTurns = 0; //Sets the amount of turns the user has been in jali to 0
+				}	
+			}
+		}
+		else if(answer == "buy house") {
+			cout << "How many houses would you like?" << endl;
+			int numberOfHouses;
+			cin >> numberOfHouses;
 
-				break;
-			case "buy property":
-				if(current.getOwner == "No Owner") {
-					property.setOwner(current);
-				}
-				else {
-					cout << "This property is already owned by " << current.getOwner() << "." << endl;
-					cout << "Perhaps consider a trade." << endl;
-				}
-				break;
-
-			case "who owns this":
-				cout << property.getOwner();
-				break;
-			default:
-				cout << "I was unable to figure out what the hell you're trying to say." << endl;
-				prompt();
-				break;
+			if(cin) {
+				//Function to be built out
+				//property.buyHouse(numberOfHouses);
+			}
+			else {
+				cout << "Please enter a nuber, 1-5";
+				prompt(current, property);
+			}
+		}
+		else if(answer == "buy property") {
+			if(property.getOwner == "No Owner") {
+				property.setOwner(current);
+			}
+			else {
+				cout << "This property is already owned by " << property.getOwner() << "." << endl;
+				cout << "Perhaps consider a trade." << endl;
+			}
+		}
+		else if(answer == "who owns this") {
+			cout << property.getOwner();
+		}
+		else {
+			cout << "I was unable to figure out what the hell you're trying to say." << endl;
+			prompt(current, property);
 		}
 	}
 }

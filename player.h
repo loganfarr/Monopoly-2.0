@@ -8,7 +8,6 @@ private:
 	bool inJail;
 	int numberOfPropertiesOwned;
 	std::string propertiesOwned[36];
-	int difficulty;
 	int netWealth;
 	int currentPosition;
 
@@ -21,6 +20,7 @@ public:
 	void prompt();
 	int rollDice(void);
 	int move();
+	int move(int dice);
 	void setCash(int setAmount);
 	int getCash(void);
 	void putInJail(void);
@@ -32,4 +32,5 @@ public:
 	int calculateNetWealth();
 	void endTurn();
 	int jailTurns;
+	int difficulty;
 };

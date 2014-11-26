@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "player.h"
 #include "propertySpace.h"
+#include <iostream>
 
 /**
 	Constructor for the "Player" class.
@@ -18,6 +19,7 @@ player::player(std::string name, int AI) {
 	cash = 1500;
 	difficulty = AI;
 	currentPosition = 0;
+	inJail = false;
 }
 
 void player::initialize(std::string name, int AI) {
@@ -25,6 +27,7 @@ void player::initialize(std::string name, int AI) {
 	cash = 1500;
 	difficulty = AI;
 	currentPosition = 0;
+	inJail = false;
 }
 
 void player::setCash(int setAmount) {
@@ -41,6 +44,7 @@ void player::putInJail() {
 
 void player::getOutOfJail() {
 	inJail = false;
+	std::cout << "You are now out of jail." << std::endl;
 }
 
 bool ifInJail() {
@@ -51,7 +55,7 @@ int player::rollDice() {
 	int die1 = rand() % 6 + 1;
 	int die2 = rand() % 6 + 1;
 
-	int die = new int[3];
+	int die[3];
 	die[1] = die1;
 	die[2] = die2;
 	die[3] = die1 + die2;
@@ -84,6 +88,10 @@ int player::move() {
 	}
 	
 	return currentPosition;
+}
+
+int move(int dice) {
+	
 }
 
 int player::currentProperty() {

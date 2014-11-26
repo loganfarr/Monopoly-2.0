@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "propertySpace.h"
+#include "player.h"
+#include <iostream>
 #include <string>
 
 propertySpace::propertySpace() {
@@ -14,6 +16,7 @@ propertySpace::propertySpace(int pid, std::string ptitle, std::string pcolor, in
 	price = pprice;
 	rent[0] = baseRent;
 	houses = 0;
+	owner = "";
 }
 
 propertySpace::propertySpace(int pid, std::string ptitle, std::string pcolor, int pprice, int baseRent, int oneHouse, int twoHouse, int threeHouse, int fourHouse, int hotel) {
@@ -28,6 +31,7 @@ propertySpace::propertySpace(int pid, std::string ptitle, std::string pcolor, in
 	rent[4] = fourHouse;
 	rent[5] = hotel;
 	houses = 0;
+	owner = "";
 }
 
 void propertySpace::initialize(std::string ptitle, std::string pcolor, int pprice, int baseRent) {
@@ -61,7 +65,7 @@ void propertySpace::checkProperty(propertySpace properties[], int id) {
 }
 
 std::string propertySpace::getOwner() {
-	if(owner != null) {
+	if(owner != "") {
 		return owner;
 	}
 	else {
@@ -72,12 +76,12 @@ std::string propertySpace::getOwner() {
 void propertySpace::setOwner(player current) {
 	int playerCash = current.getCash();
 	if(playerCash < price) {
-		cout << "You don't have enough money to purchase this property.";
+		std::cout << "You don't have enough money to purchase this property.";
 		return; 
 	}
 	else {
 		current.setCash(playerCash - price);
-		this.setOwner(current.username);
+		owner = current.username;
 	}
 }
 

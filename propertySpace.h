@@ -1,4 +1,5 @@
 #pragma once
+#include "player.h"
 #include <string>
 
 class propertySpace
@@ -19,8 +20,8 @@ public:
 	propertySpace(int id, std::string ptitle, std::string pcolor, int pprice, int baseRent, int oneHouse, int twoHouses, int threeHouses, int fourHouses, int hotel);
 	void initialize(std::string ptitle, std::string pcolor, int pprice, int baseRent);
 	void initialize(std::string ptitle, std::string pcolor, int pprice, int baseRent, int oneHouse, int twoHouses, int threeHouses, int fourHouses, int hotel);
-	void setOwner(std::string owner);
-	void checkProperty(int id);
+	void setOwner(player owner);
+	void checkProperty(propertySpace properties[], int id);
 	std::string getOwner();
 	~propertySpace(void);
 };
