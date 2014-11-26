@@ -56,8 +56,29 @@ void propertySpace::initialize(std::string ptitle, std::string pcolor, int ppric
 }
 
 
-void checkProperty(propertySpace properties[], int id) {
+void propertySpace::checkProperty(propertySpace properties[], int id) {
 	
+}
+
+std::string propertySpace::getOwner() {
+	if(owner != null) {
+		return owner;
+	}
+	else {
+		return "No Owner";
+	}
+}
+
+void propertySpace::setOwner(player current) {
+	int playerCash = current.getCash();
+	if(playerCash < price) {
+		cout << "You don't have enough money to purchase this property.";
+		return; 
+	}
+	else {
+		current.setCash(playerCash - price);
+		this.setOwner(current.username);
+	}
 }
 
 propertySpace::~propertySpace(void) { }

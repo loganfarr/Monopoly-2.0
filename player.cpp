@@ -74,7 +74,20 @@ int player::rollDice() {
 }
 
 int player::move() {
-	return currentPosition + rollDice();
+	int dice = rollDice();
+
+	if(currentPosition + dice[3] >= 40) {
+		currentPosition = currentPosition + dice[3] - 40;
+	}
+	else {
+		currentPosition += dice[3];
+	}
+	
+	return currentPosition;
+}
+
+int player::currentProperty() {
+	return currentPosition;
 }
 
 void player::endTurn() {

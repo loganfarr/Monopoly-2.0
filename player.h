@@ -27,7 +27,7 @@ public:
 	void getOutOfJail(void);
 	bool ifInJail();
 	int approxWealth(void);
-	std::string currentProperty();
+	int currentProperty();
 	bool gutInstinct();
 	int calculateNetWealth();
 	void endTurn();

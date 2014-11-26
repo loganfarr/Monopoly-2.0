@@ -88,16 +88,18 @@ void initialize() {
 void promptHelp() {
 	cout << "Command 		|	Action" << endl;
 	cout << "_________________________________________________________________________________________" << endl;
+	cout << "help 			|	Displays this prompt" < endl;
 	cout << "roll dice		|	Rolls the dice to move the player" << endl;
 	cout << "buy house 		|	Buys a house to put on a porperty" << endl;
 	cout << "buy property 	|	Buys the property the player is currently on" << endl;
 	cout << "sell house 	|	Sells a certain amount of houses on a selected property" << endl;
 	cout << "sell property 	|	Sells a selected property (and all the houses on it if there are any)" << endl;
 	cout << "trade			|	Initiates a trade with a selected player" << endl;
+	cout << "who owns this  |	Returns the owner of the current property." << endl;
 
 }
 
-void prompt(player current) {
+void prompt(player current, propertySpace property) {
 	if(difficulty == 0) {
 		string answer;
 
@@ -143,18 +145,31 @@ void prompt(player current) {
 				cin << numberOfHouses;
 
 				if(cin) {
-					buyHouse(numberOfHouses);
+					property.buyHouse(numberOfHouses);
 				}
 				else {
+					cout << "Please enter a nuber, 1-5";
 					prompt();
 				}
 
-				buyHouse();
+				break;
+			case "buy property":
+				if(current.getOwner == "No Owner") {
+					property.setOwner(current);
+				}
+				else {
+					cout << "This property is already owned by " << current.getOwner() << "." << endl;
+					cout << "Perhaps consider a trade." << endl;
+				}
+				break;
+
+			case "who owns this":
+				cout << property.getOwner();
 				break;
 			default:
 				cout << "I was unable to figure out what the hell you're trying to say." << endl;
 				prompt();
-
+				break;
 		}
 	}
 }
@@ -162,7 +177,8 @@ void prompt(player current) {
 void play() {
 	while(!win) {
 		for each(player current in players) {
-			prompt(current);
+			promptHelp();
+			prompt(current, properties[current.currentProperty()]);
 		}
 	}
 }
