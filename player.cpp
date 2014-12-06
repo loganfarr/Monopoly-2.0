@@ -30,35 +30,14 @@ void player::initialize(std::string name, int AI) {
 	inJail = false;
 }
 
-void player::setCash(int setAmount) {
-	cash = setAmount;
-}
-
-int player::getCash() {
-	return cash;
-}
-
-void player::putInJail() {
-	inJail = true;
-}
-
-void player::getOutOfJail() {
-	inJail = false;
-	std::cout << "You are now out of jail." << std::endl;
-}
-
-bool ifInJail() {
-	return inJail;
-}
-
-int player::rollDice() {
+int* player::rollDice(int dice[]) {
 	int die1 = rand() % 6 + 1;
 	int die2 = rand() % 6 + 1;
 
 	int die[3];
-	die[1] = die1;
-	die[2] = die2;
-	die[3] = die1 + die2;
+	die[0] = die1;
+	die[1] = die2;
+	die[2] = die1 + die2;
 
 	int total = die1 + die2;
 
@@ -74,24 +53,18 @@ int player::rollDice() {
 		endTurn();	
 	}
 
-	return die[];
+	return die;
 }
 
-int player::move() {
-	int dice = rollDice();
-
-	if(currentPosition + dice[3] >= 40) {
-		currentPosition = currentPosition + dice[3] - 40;
+int player::move(int dice) {
+	if(currentPosition + dice >= 40) {
+		currentPosition = currentPosition + dice - 40;
 	}
 	else {
-		currentPosition += dice[3];
+		currentPosition += dice;
 	}
 	
 	return currentPosition;
-}
-
-int move(int dice) {
-	
 }
 
 int player::currentProperty() {

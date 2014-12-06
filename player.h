@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <iostream>
 
 class player
 {
@@ -18,19 +19,39 @@ public:
 	~player(void);
 	std::string username;
 	void prompt();
-	int rollDice(void);
-	int move();
+	int* rollDice(int dice[]);
 	int move(int dice);
-	void setCash(int setAmount);
-	int getCash(void);
-	void putInJail(void);
-	void getOutOfJail(void);
-	bool ifInJail();
 	int approxWealth(void);
-	int currentProperty();
-	bool gutInstinct();
-	int calculateNetWealth();
-	void endTurn();
+	int currentProperty(void);
+	bool gutInstinct(void);
+	int calculateNetWealth(void);
+	void endTurn(void);
 	int jailTurns;
 	int difficulty;
+
+	void setCash(int setAmount)
+	{
+		cash = setAmount;
+	}
+
+	int getCash(void)
+	{
+		return cash;
+	}
+
+	void putInJail(void)
+	{
+		inJail = true;
+	}
+
+	bool ifInJail(void)
+	{
+		return inJail;
+	}
+
+	void getOutOfJail(void)
+	{
+		inJail = false;
+		std::cout << "You are now out of jail." << std::endl;
+	}
 };

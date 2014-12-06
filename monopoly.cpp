@@ -122,16 +122,17 @@ void prompt(player current, propertySpace property) {
 		}
 		else if(answer == "roll dice") {
 			//If the user is not in jail
-			if(!current.ifInJail) {
+			if(current.ifInJail() == false) {
 				//The player moves
-				current.move(dice[3]);
+				current.move(dice[2]);
 			}
 			else {
-				dice = current.rollDice();
+				//Rolls the dice and stores it in an array
+				//dice = current.rollDice();
 
 				//If the player has NOT been in jail for three turns
 				if(current.jailTurns != 3) {
-					if(dice[1] == dice[2]) { //If the user rolls doubles
+					if(dice[0] == dice[1]) { //If the user rolls doubles
 						current.getOutOfJail(); //Get the user out of jail
 					}
 					else {
@@ -141,11 +142,11 @@ void prompt(player current, propertySpace property) {
 				}
 				//If the player has been in jail for three turns
 				else {
-					if(dice[1] == dice[2]) { //If the user rolls doubles
+					if(dice[0] == dice[1]) { //If the user rolls doubles
 						current.getOutOfJail(); //Gets the user out of jail
 					}
 					else { //If the user does NOT roll doubles
-						current.setCash(current.getCash - 50); //Make the player pay the mandatory $50 fee to get out of jail 
+						current.setCash(current.getCash() - 50); //Make the player pay the mandatory $50 fee to get out of jail 
 						current.getOutOfJail(); //Gets the user out of jail
 					}
 					current.jailTurns = 0; //Sets the amount of turns the user has been in jali to 0
@@ -167,7 +168,7 @@ void prompt(player current, propertySpace property) {
 			}
 		}
 		else if(answer == "buy property") {
-			if(property.getOwner == "No Owner") {
+			if(property.getOwner() == "No Owner") {
 				property.setOwner(current);
 			}
 			else {
