@@ -160,12 +160,14 @@ void prompt(player current, propertySpace property) {
 
 			if(cin) {
 				//Function to be built out
-				//property.buyHouse(numberOfHouses);
+				property.buyHouse(numberOfHouses, current);
 			}
 			else {
 				cout << "Please enter a nuber, 1-5";
 				prompt(current, property);
 			}
+
+			prompt(current, property);
 		}
 		else if(answer == "buy property") {
 			if(property.getOwner() == "No Owner") {
@@ -178,18 +180,51 @@ void prompt(player current, propertySpace property) {
 		}
 		else if(answer == "who owns this") {
 			cout << property.getOwner();
+			prompt(current, property);
 		}
 		else {
 			cout << "I was unable to figure out what the hell you're trying to say." << endl;
 			prompt(current, property);
 		}
 	}
+
+	return;
+}
+
+int checkProperty(player current, int id) 
+{
+	propertySpace property = properties[id];
+	string owner = properties[id].getOwner();
+	int price = properties[id].getPrice();
+	int rent = properties[id].getRent();
+
+	if(owner != "No Owner") {
+		cout << "This property is available." << endl << "The price is " << price << "." << endl;
+		cout << "Would you like to buy it? (y/n)" << endl;
+		
+		string response = "";
+		cin >> response;
+
+		if(response == "y" || response == "Y") {
+			property.setOwner(current);
+			return 0;
+		}
+		else if(response == "n" || response == "N") {
+			return 0;
+		}
+		else {
+			cout << "I do not understand what you are saying, so I am going to assume you don't want to buy it." << endl;
+			return 0;
+		}
+	}
 }
 
 void play() {
+	promptHelp();
+
 	while(!win) {
 		for each(player current in players) {
-			promptHelp();
+			cout << "It is now " << current.username << "'s turn." << endl;
 			prompt(current, properties[current.currentProperty()]);
 		}
 	}

@@ -19,7 +19,8 @@ propertySpace::propertySpace(int pid, std::string ptitle, std::string pcolor, in
 	owner = "";
 }
 
-propertySpace::propertySpace(int pid, std::string ptitle, std::string pcolor, int pprice, int baseRent, int oneHouse, int twoHouse, int threeHouse, int fourHouse, int hotel) {
+propertySpace::propertySpace(int pid, std::string ptitle, std::string pcolor, int pprice, int baseRent, int oneHouse, int twoHouse, int threeHouse, int fourHouse, int hotel) 
+{
 	id = pid;
 	title = ptitle;
 	color = pcolor;
@@ -34,7 +35,8 @@ propertySpace::propertySpace(int pid, std::string ptitle, std::string pcolor, in
 	owner = "";
 }
 
-void propertySpace::initialize(std::string ptitle, std::string pcolor, int pprice, int baseRent) {
+void propertySpace::initialize(std::string ptitle, std::string pcolor, int pprice, int baseRent) 
+{
 	title = ptitle;
 	color = pcolor;
 	price = pprice;
@@ -44,7 +46,8 @@ void propertySpace::initialize(std::string ptitle, std::string pcolor, int ppric
 	mortgaged = false;
 }
 
-void propertySpace::initialize(std::string ptitle, std::string pcolor, int pprice, int baseRent, int oneHouse, int twoHouses, int threeHouses, int fourHouses, int hotel) {
+void propertySpace::initialize(std::string ptitle, std::string pcolor, int pprice, int baseRent, int oneHouse, int twoHouses, int threeHouses, int fourHouses, int hotel) 
+{
 	title = ptitle;
 	color = pcolor;
 	price = pprice;
@@ -60,20 +63,13 @@ void propertySpace::initialize(std::string ptitle, std::string pcolor, int ppric
 }
 
 
-void propertySpace::checkProperty(propertySpace properties[], int id) {
+void propertySpace::checkProperty(int id) 
+{
 	
-}
+}\
 
-std::string propertySpace::getOwner() {
-	if(owner != "") {
-		return owner;
-	}
-	else {
-		return "No Owner";
-	}
-}
-
-void propertySpace::setOwner(player current) {
+void propertySpace::setOwner(player current) 
+{
 	int playerCash = current.getCash();
 	if(playerCash < price) {
 		std::cout << "You don't have enough money to purchase this property.";
@@ -82,6 +78,31 @@ void propertySpace::setOwner(player current) {
 	else {
 		current.setCash(playerCash - price);
 		owner = current.username;
+		std::cout << "The new owner of this property is " << this->getOwner() << std::endl;
+	}
+}
+
+void propertySpace::buyHouse(int numberOfHouses, player current) 
+{
+	if(houses == 5) {
+		std::cout << "You have the maximum amount of houses on this property." << std::endl;
+	}
+	else if(houses + numberOfHouses > 5) {
+		std::cout << "You already have " << houses << " number of houses on the property. You cannot have more than a total of 5 houses on the property." << std::endl;
+	}
+	else {
+		int cash = current.getCash();
+		int housePrice = price / 2;
+
+		if(cash < housePrice * numberOfHouses) {
+			std::cout << "You do not have enough money to purchase that many houses." << std::endl;
+		}
+		else {
+			current.setCash(cash - numberOfHouses * housePrice);
+			std::cout << current.username << " now has $" << current.getCash() << std::endl;
+			houses += numberOfHouses;
+		}
+
 	}
 }
 

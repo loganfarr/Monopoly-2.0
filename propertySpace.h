@@ -21,7 +21,27 @@ public:
 	void initialize(std::string ptitle, std::string pcolor, int pprice, int baseRent);
 	void initialize(std::string ptitle, std::string pcolor, int pprice, int baseRent, int oneHouse, int twoHouses, int threeHouses, int fourHouses, int hotel);
 	void setOwner(player owner);
-	void checkProperty(propertySpace properties[], int id);
-	std::string getOwner();
+	void checkProperty(int id);
+	void buyHouse(int numberOfHouses, player current);
 	~propertySpace(void);
+
+	int getPrice(void) 
+	{
+		return price;
+	}
+
+	std::string getOwner(void) 
+	{
+		return owner;
+	}
+
+	int getHouses(void)
+	{
+		return houses;
+	}
+
+	int getRent(void) 
+	{
+		return rent[houses];
+	}
 };
