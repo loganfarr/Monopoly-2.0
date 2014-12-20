@@ -1,2 +1,2 @@
-<h2>Monopoly 2.0</h2>
+Monopoly 2.0
 Description coming soon.
