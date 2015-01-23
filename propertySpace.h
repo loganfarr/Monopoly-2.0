@@ -44,4 +44,9 @@ public:
 	{
 		return rent[houses];
 	}
+
+	std::string getTitle(void) 
+	{
+		return title;
+	}
 };

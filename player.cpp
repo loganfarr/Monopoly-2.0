@@ -30,28 +30,15 @@ void player::initialize(std::string name, int AI) {
 	inJail = false;
 }
 
-int* player::rollDice(int dice[]) {
+int* player::rollDice() {
+	int * die = new int[3];
+
 	int die1 = rand() % 6 + 1;
 	int die2 = rand() % 6 + 1;
 
-	int die[3];
 	die[0] = die1;
 	die[1] = die2;
 	die[2] = die1 + die2;
-
-	int total = die1 + die2;
-
-	//std::cout << "Dice rolled a " << total << std::endl;
-
-	if(!inJail) {
-		currentPosition += total;
-	}
-	if(inJail && (die1 == die2)) {
-		currentPosition += total;
-	}
-	else {
-		endTurn();	
-	}
 
 	return die;
 }

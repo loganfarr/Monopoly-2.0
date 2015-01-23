@@ -65,8 +65,17 @@ void propertySpace::initialize(std::string ptitle, std::string pcolor, int ppric
 
 void propertySpace::checkProperty(int id) 
 {
-	
-}\
+	if(owner == "") {
+		std::cout << "No one currently owns this property (" << title << ")." << std::endl;
+		std::cout << "Purchasing price: " << price << std::endl;
+		std::cout << "Would you like to purchase it? (y/n)" << std::endl;
+		std::string answer;
+		std::cin >> answer;
+		if(answer == "y") {
+			
+		}
+	}
+}
 
 void propertySpace::setOwner(player current) 
 {

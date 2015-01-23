@@ -69,7 +69,7 @@ void initialize() {
 	//Prompts the user to set up the game
 	cout << "How many players are playing? (This includes both human and AI. Max is 10.)" << endl << "Please enter a number (1-10)." << endl;
 	cin >> numberOfPlayers;
-	cout << "How many players will be human? Please enter a number (1-10)";
+	cout << "How many players will be human? Please enter a number (1-10)" << endl;
 	cin >> numberOfHumans;
 
 	//Asks the user what difficulty he/she wants the AI to be (Functionality to be decided later)
@@ -81,7 +81,7 @@ void initialize() {
 	//Declares each of the human players
 	for(int i = 0; i < numberOfHumans; i++) {
 		string username;
-		cout << "Enter the username for Player" << i << "." << endl;
+		cout << "Enter the username for Player " << i+1 << "." << endl;
 		cin >> username;
 		players[i].initialize(username, 0);
 	}
@@ -112,24 +112,26 @@ void prompt(player current, propertySpace property) {
 	//If it's a human player's turn
 	if(current.difficulty == 0) {
 		string answer;   //Variable to store their answer in
-		int dice[3];     //The results from the die roll
+		int * dice;     //The results from the die roll
 
+		//Rolls the dice and stores it in an array
+		dice = current.rollDice();
+		cout << "\n" << endl;
 		cout << "What would you like to do?" << endl;
-		cin >> answer;
+		getline(cin, answer);
 
 		if(answer == "help") {
 			promptHelp();
 		}
 		else if(answer == "roll dice") {
+			//TO-DO move this else if logic to the player.move() function
 			//If the user is not in jail
 			if(current.ifInJail() == false) {
 				//The player moves
 				current.move(dice[2]);
+				cout << current.username << " is now on " << properties[current.currentProperty()].getTitle() << endl;
 			}
 			else {
-				//Rolls the dice and stores it in an array
-				//dice = current.rollDice();
-
 				//If the player has NOT been in jail for three turns
 				if(current.jailTurns != 3) {
 					if(dice[0] == dice[1]) { //If the user rolls doubles
@@ -142,13 +144,11 @@ void prompt(player current, propertySpace property) {
 				}
 				//If the player has been in jail for three turns
 				else {
-					if(dice[0] == dice[1]) { //If the user rolls doubles
-						current.getOutOfJail(); //Gets the user out of jail
-					}
-					else { //If the user does NOT roll doubles
+					if(dice[0] != dice[1]) { //If the user does NOT roll doubles
 						current.setCash(current.getCash() - 50); //Make the player pay the mandatory $50 fee to get out of jail 
-						current.getOutOfJail(); //Gets the user out of jail
 					}
+
+					current.getOutOfJail(); //Gets the user out of jail
 					current.jailTurns = 0; //Sets the amount of turns the user has been in jali to 0
 				}	
 			}
@@ -184,6 +184,7 @@ void prompt(player current, propertySpace property) {
 		}
 		else {
 			cout << "I was unable to figure out what the hell you're trying to say." << endl;
+			cout << answer << endl;
 			prompt(current, property);
 		}
 	}

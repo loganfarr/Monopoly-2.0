@@ -19,7 +19,7 @@ public:
 	~player(void);
 	std::string username;
 	void prompt();
-	int* rollDice(int dice[]);
+	int* rollDice();
 	int move(int dice);
 	int approxWealth(void);
 	int currentProperty(void);
