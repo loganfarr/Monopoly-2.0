@@ -124,33 +124,11 @@ void prompt(player current, propertySpace property) {
 			promptHelp();
 		}
 		else if(answer == "roll dice") {
-			//TO-DO move this else if logic to the player.move() function
-			//If the user is not in jail
-			if(current.ifInJail() == false) {
-				//The player moves
-				current.move(dice[2]);
-				cout << current.username << " is now on " << properties[current.currentProperty()].getTitle() << endl;
-			}
-			else {
-				//If the player has NOT been in jail for three turns
-				if(current.jailTurns != 3) {
-					if(dice[0] == dice[1]) { //If the user rolls doubles
-						current.getOutOfJail(); //Get the user out of jail
-					}
-					else {
-						current.jailTurns++; //Add another one to the amount of turns the user has been in jail
-						current.endTurn();
-					}
-				}
-				//If the player has been in jail for three turns
-				else {
-					if(dice[0] != dice[1]) { //If the user does NOT roll doubles
-						current.setCash(current.getCash() - 50); //Make the player pay the mandatory $50 fee to get out of jail 
-					}
+			int moved = current.move(dice);
 
-					current.getOutOfJail(); //Gets the user out of jail
-					current.jailTurns = 0; //Sets the amount of turns the user has been in jali to 0
-				}	
+			if(moved != NULL) {
+				std::cout << current.username << " is now on " << properties[moved].getTitle() << std::endl;
+				return;
 			}
 		}
 		else if(answer == "buy house") {

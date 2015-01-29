@@ -20,7 +20,7 @@ public:
 	std::string username;
 	void prompt();
 	int* rollDice();
-	int move(int dice);
+	int move(int * dice);
 	int approxWealth(void);
 	int currentProperty(void);
 	bool gutInstinct(void);
